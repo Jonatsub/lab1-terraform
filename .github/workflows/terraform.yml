@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   lint:
@@ -42,17 +43,13 @@ jobs:
     if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v4
-
       - uses: hashicorp/setup-terraform@v3
-
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
           credentials_json: '${{ secrets.GCP_SA_KEY }}'
-
       - name: Terraform Init
         run: terraform init
-
       - name: Create terraform.tfvars
         run: |
           cat > terraform.tfvars <<'VARS'
@@ -60,6 +57,27 @@ jobs:
           region     = "europe-north1"
           student_id = "jonathan-tsubarah"
           VARS
-
       - name: Terraform Plan
         run: terraform plan -no-color
+
+  apply:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+      - name: Terraform Init
+        run: terraform init
+      - name: Create terraform.tfvars
+        run: |
+          cat > terraform.tfvars <<'VARS'
+          project_id = "chas-devsecops-2026"
+          region     = "europe-north1"
+          student_id = "jonathan-tsubarah"
+          VARS
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -no-color
