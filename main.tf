@@ -14,7 +14,7 @@ provider "google" {
 
 resource "google_compute_instance" "vm" {
   name         = "${var.student_id}-lab1-vm"
-  machine_type = "e2-micro"
+  machine_type = "e2-small"
   zone         = "${var.region}-a"
 
   boot_disk {
@@ -42,7 +42,7 @@ resource "google_compute_instance" "vm" {
 }
 
 resource "google_compute_resource_policy" "daily_backup" {
-  name   = "${var.student_id}-daily-backup"
+  name   = "${var.student_id}-daily-backup-v2"
   region = var.region
 
   snapshot_schedule_policy {
