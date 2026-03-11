@@ -74,7 +74,8 @@ To continue, I added GCP_SA_KEY to GitHub Actions secrets. After that, terraform
 
 ## Screenshots
 
-For the final submission, I will include:
+Pipeline screenshot:
 
-- a screenshot of the pull request with green checks
-- a screenshot of the VM in GCP Console if the deployment is completed later
+![Pipeline checks](images/pipeline-checks.png)
+
+I will also add a screenshot of the VM in GCP Console if the deployment is completed later.
