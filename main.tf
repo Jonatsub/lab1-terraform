@@ -14,8 +14,8 @@ provider "google" {
 
 resource "google_compute_instance" "vm" {
   name         = "${var.student_id}-lab1-vm"
-  machine_type = "e2-micro"
-  zone         = "${var.region}-a"
+  machine_type = "e2-small"
+  zone         = "${var.region}-c"
 
   boot_disk {
     initialize_params {
@@ -30,7 +30,9 @@ resource "google_compute_instance" "vm" {
     access_config {}
   }
 
-  metadata_startup_script = file("startup.sh")
+  metadata = {
+    startup-script = file("startup.sh")
+  }
 
   labels = {
     student = var.student_id
@@ -42,7 +44,7 @@ resource "google_compute_instance" "vm" {
 }
 
 resource "google_compute_resource_policy" "daily_backup" {
-  name   = "${var.student_id}-daily-backup"
+  name   = "${var.student_id}-daily-backup-v2"
   region = var.region
 
   snapshot_schedule_policy {
@@ -62,5 +64,5 @@ resource "google_compute_resource_policy" "daily_backup" {
 resource "google_compute_disk_resource_policy_attachment" "backup_attachment" {
   name = google_compute_resource_policy.daily_backup.name
   disk = google_compute_instance.vm.name
-  zone = "${var.region}-a"
+  zone = "${var.region}-c"
 }
