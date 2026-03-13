@@ -30,7 +30,9 @@ resource "google_compute_instance" "vm" {
     access_config {}
   }
 
-  metadata_startup_script = file("startup.sh")
+  metadata = {
+    startup-script = file("startup.sh")
+  }
 
   labels = {
     student = var.student_id
