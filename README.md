@@ -1,76 +1,20 @@
 # Lab 1 Terraform
 
-This is my Lab 1 in Terraform.
+This project creates a Linux VM in Google Cloud using Terraform. It also includes a startup script for basic hardening, a daily backup policy, and a GitHub Actions pipeline for validation and security checks.
 
-In this lab, I made a project where I used Terraform to describe a Linux VM in Google Cloud. I also added a backup policy and a GitHub Actions pipeline to check the code.
+## How to run
 
-## What I did
-
-I created Terraform code for:
-
-- an Ubuntu VM in GCP
-- a startup script with simple hardening
-- a snapshot policy for backup
-- a GitHub Actions workflow for lint, security scan, validate, and plan
-
-## Files in the project
-
-- main.tf - the main resources
-- variables.tf - variables
-- outputs.tf - outputs from Terraform
-- startup.sh - script that runs when the VM starts
-- .github/workflows/terraform.yml - pipeline in GitHub Actions
-- .gitignore - makes sure sensitive and local files do not end up in Git
-
-## Security
-
-In startup.sh I added:
-
-- ufw
-- fail2ban
-- unattended-upgrades
-
-I chose this so the VM gets a simple basic security setup from the start.
-
-## Commands I used
-
-To start Terraform:
 terraform init
 
-To check that the code is valid:
-terraform validate
-
-To see what Terraform wants to create:
 terraform plan
 
-To try to create the resources:
 terraform apply
 
-## Pipeline
+## Security decisions
 
-I made a GitHub Actions pipeline that runs:
+I used ufw, fail2ban, and unattended-upgrades in the startup script.
 
-- terraform fmt -check -recursive
-- Trivy scan
-- terraform validate
-- terraform plan
-
-## Result
-
-The Terraform code passed validate and plan.
-
-I also created a pull request in GitHub and got green checks for:
-
-- lint
-- security
-- validate
-- plan
-
-## Problems I ran into
-
-When I ran terraform apply locally, it did not work because my account did not have enough permissions in GCP to create the VM and backup policy.
-
-To continue, I added GCP_SA_KEY to GitHub Actions secrets. After that, terraform plan worked in CI.
+I chose ufw to limit incoming traffic, fail2ban to help protect against repeated login attempts, and unattended-upgrades to help keep the system updated with security patches.
 
 ## Screenshots
 
@@ -78,4 +22,6 @@ Pipeline screenshot:
 
 ![Pipeline checks](images/pipeline-checks.png)
 
-I will also add a screenshot of the VM in GCP Console if the deployment is completed later.
+VM screenshot from GCP Console:
+
+![GCP VM](images/gcp-vm.png)
