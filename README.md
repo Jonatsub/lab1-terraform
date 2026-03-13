@@ -16,6 +16,16 @@ I used ufw, fail2ban, and unattended-upgrades in the startup script.
 
 I chose ufw to limit incoming traffic, fail2ban to help protect against repeated login attempts, and unattended-upgrades to help keep the system updated with security patches.
 
+## DR documentation
+
+This project uses a daily snapshot backup policy for the VM disk.
+
+RPO
+The recovery point objective is 24 hours. This means I may lose up to one day of changes if the VM is lost before the next snapshot.
+
+RTO
+The recovery time objective is about 2 to 4 hours. This means the VM and backup setup should be possible to restore within a few hours by using Terraform and the available snapshots.
+
 ## Screenshots
 
 Pipeline screenshot:
