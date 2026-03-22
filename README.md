@@ -1,20 +1,23 @@
 # Lab 1 Terraform
 
-This project creates a Linux VM in Google Cloud using Terraform. It also includes a startup script for basic hardening, a daily backup policy, and a GitHub Actions pipeline for validation and security checks.
+I den här labben har jag använt Terraform för att skapa en Linux-VM i Google Cloud. Jag har också lagt till ett startup-script för enkel hårdning, en daglig backup-policy och en GitHub Actions-pipeline för att kontrollera koden.
 
-## How to run
+## Hur man kör projektet
 
 terraform init
-
 terraform plan
-
 terraform apply
 
-## Security decisions
+## Säkerhetsval
 
-I used ufw, fail2ban, and unattended-upgrades in the startup script.
+I startup-scriptet använde jag ufw, fail2ban och unattended-upgrades.
 
-I chose ufw to limit incoming traffic, fail2ban to help protect against repeated login attempts, and unattended-upgrades to help keep the system updated with security patches.
+Jag valde ufw för att begränsa inkommande trafik, fail2ban för att minska risken för upprepade inloggningsförsök och unattended-upgrades för att hålla systemet uppdaterat med säkerhetsuppdateringar.
+
+## Kommentar
+
+Under arbetet stötte jag på att vissa resurser redan fanns i GCP. Därför behövde jag importera dem till Terraform state i stället för att skapa allt från början. Det gjorde att en manuell apply i GitHub Actions kunde ge felet already exists, trots att resurserna redan fanns.
+
 
 ## DR documentation
 
@@ -32,6 +35,6 @@ Pipeline screenshot:
 
 ![Pipeline checks](images/pipeline-checks.png)
 
-VM screenshot from GCP Console:
+VM screenshot från GCP Console:
 
 ![GCP VM](images/gcp-vm.png)
